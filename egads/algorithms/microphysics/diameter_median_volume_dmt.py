@@ -80,8 +80,13 @@ class DiameterMedianVolumeDmt(egads_core.EgadsAlgorithm):
         rho_i = numpy.array(rho_i)
         if len(rho_i) == 1:
             rho_i = numpy.ones(len(d_i)) * rho_i
-        if s_i is 1.0:
-            s_i = numpy.ones(n_i.shape)
+        try:
+            if len(s_i) > 1:
+                pass
+            else: 
+                s_i = numpy.ones(n_i.shape) * s_i
+        except TypeError:
+            s_i = numpy.ones(n_i.shape) * s_i
         LWC_alg = egads.algorithms.microphysics.MassConcDmt(return_Egads=False)  # @UndefinedVariable
         LWC_total = LWC_alg.run(n_i, d_i, s_i, rho_i)  # Assuming spherical, therefore shape factor is 1.
         D_mvd = []
